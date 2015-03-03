@@ -170,4 +170,24 @@ utils.gameIcon = function(g) {
   return g.opponent.ai ? ':' : utils.variantIconsMap[g.perf];
 };
 
+// this must be cached because of the access to document.body.style
+var cachedTransformProp;
+function computeTransformProp() {
+  return 'transform' in document.body.style?
+    'transform': 'webkitTransform' in document.body.style?
+    'webkitTransform': 'mozTransform' in document.body.style?
+    'mozTransform': 'oTransform' in document.body.style?
+    'oTransform': 'msTransform';
+}
+
+utils.transformProp = function() {
+  if (!cachedTransformProp) cachedTransformProp = computeTransformProp();
+  return cachedTransformProp;
+};
+
+utils.translate = function(pos) {
+  return 'translate3d(' + pos[0] + 'px,' + pos[1] + 'px,0)';
+};
+
+
 module.exports = utils;

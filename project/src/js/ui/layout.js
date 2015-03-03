@@ -26,15 +26,13 @@ module.exports = {
           config: utils.ontouchend(menu.close)
         })
       ]),
-      m('aside#side_menu', {
-        class: menu.isOpen ? 'in' : 'out'
-      }, aside()),
+      aside(),
       gamesMenu.view(),
       loginModal.view(),
       signupModal.view()
     ];
     if (overlay) view.push(overlay());
-    return m('div.view-container', view);
+    return view;
   },
 
   free: function(header, content, footer, aside, overlay) {
@@ -49,15 +47,13 @@ module.exports = {
           config: utils.ontouchend(menu.close)
         })
       ]),
-      m('aside#side_menu', {
-        class: menu.isOpen ? 'in' : 'out'
-      }, aside()),
+      aside(),
       gamesMenu.view(),
       loginModal.view(),
       signupModal.view()
     ];
     if (overlay) view.push(overlay());
-    return m('div.view-container', view);
+    return view;
   }
 
 };

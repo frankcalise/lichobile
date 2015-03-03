@@ -61,8 +61,8 @@ function closedPerfs(user) {
   });
 }
 
-module.exports = function(onSettingChange) {
-  if (menu.settingsOpen) return m('div#settings', [
+function renderSettings(onSettingChange) {
+  return m('div#settings', [
     m('header', [
       m('button[data-icon=L]', {
         config: utils.ontouchend(menu.closeSettings)
@@ -78,28 +78,9 @@ module.exports = function(onSettingChange) {
     ]),
     window.lichess.version ? m('section.app_version', 'v' + window.lichess.version) : null
   ]);
-  var user = session.get();
-  var header = user ? [
-    m('h2', user.username),
-    m('section', {
-      class: 'ratings ' + (perfsOpen() ? 'open' : 'closed'),
-      config: utils.ontouchend(function() {
-        perfsOpen(!perfsOpen());
-      })
-    }, perfsOpen() ? openPerfs(user) : closedPerfs(user))
-  ] : [
-    m('h2', 'Anonymous'),
-    m('button.login', {
-      config: utils.ontouchend(loginModal.open)
-    }, i18n('signIn'))
-  ];
-  header.unshift(
-    m('div.logo', [
-      m('button.settings[data-icon=%]', {
-        config: utils.ontouchend(menu.openSettings)
-      })
-    ])
-  );
+}
+
+function renderLinks(user) {
   var links = [
     m('li.side_link', {
       key: 'menu_create_game',
@@ -129,8 +110,52 @@ module.exports = function(onSettingChange) {
       }, i18n('logOut'))
     );
   }
-  return [
-    m('header.side_menu_header', header),
-    m('nav#side_links', m('ul', links))
+
+  return links;
+}
+
+function renderHeader(user) {
+  var header = user ? [
+    m('h2', user.username),
+    m('section', {
+      class: 'ratings ' + (perfsOpen() ? 'open' : 'closed'),
+      config: utils.ontouchend(function() {
+        perfsOpen(!perfsOpen());
+      })
+    }, perfsOpen() ? openPerfs(user) : closedPerfs(user))
+  ] : [
+    m('h2', 'Anonymous'),
+    m('button.login', {
+      config: utils.ontouchend(loginModal.open)
+    }, i18n('signIn'))
   ];
+  header.unshift(
+    m('div.logo', [
+      m('button.settings[data-icon=%]', {
+        config: utils.ontouchend(menu.openSettings)
+      })
+    ])
+  );
+  return header;
+}
+
+module.exports = function(onSettingChange) {
+  var children;
+  if (menu.settingsOpen) {
+    children = renderSettings(onSettingChange);
+  } else {
+    var user = session.get();
+    children = [
+      m('header.side_menu_header', renderHeader(user)),
+      m('nav#side_links', m('ul', renderLinks(user)))
+    ];
+  }
+  var attrs = {
+    style: {
+      width: menu.width() + 'px'
+    }
+  };
+  if (!menu.isDragging)
+    attrs.style[utils.transformProp()] = utils.translate([-menu.width(), 0]);
+  return m('aside#side_menu', attrs, children);
 };

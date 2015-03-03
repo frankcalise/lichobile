@@ -74,7 +74,7 @@ function onOnline() {
 
 function main() {
 
-  m.route(document.body, '/', {
+  m.route(document.body.querySelector('.view-container'), '/', {
     '/': home,
     '/seeks': seeks,
     '/seek': seek,

@@ -1,14 +1,47 @@
 var utils = require('../../utils');
 var Zanimo = require('zanimo');
 var backbutton = require('../../backbutton');
+var Hammer = require('hammerjs');
 
+var dragThreshold = 10;
+var edgeThreshold = 5;
+
+var mc;
 var menu = {};
 
-/* properties */
+document.addEventListener('DOMContentLoaded', function() {
+  mc = new Hammer.Manager(document.body.querySelector('.view-container'), {
+      recognizers: [
+          [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
+          [Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL }],
+      ]
+  });
+  mc.on('panright panleft swipe', handleDrag);
+});
+
+function handleDrag(e) {
+  var touch = e.changedPointers[0];
+  if (e.type === 'panright' && e.isFirst && touch.clientX <= edgeThreshold)
+    menu.isDragging = true;
+  if (!menu.isDragging)
+    return;
+  else {
+    // TODO
+  }
+}
+
+/* public properties */
 menu.isOpen = false;
 menu.settingsOpen = false;
+menu.isDragging = false;
 
-/* methods */
+/* public methods */
+
+menu.width = function() {
+  var vw = utils.getViewportDims().vw;
+  return vw * (85 / 100);
+};
+
 menu.openSettings = function() {
   window.analytics.trackView('Settings');
   backbutton.stack.push(menu.closeSettings);
