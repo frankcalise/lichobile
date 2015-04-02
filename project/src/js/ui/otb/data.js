@@ -23,7 +23,9 @@ module.exports = function(cfg) {
       "status": {
         "id": 20,
         "name": "started"
-      }
+      },
+      "startedAtTurn": 0,
+      "turns:": 0
     },
     "player": {
       "color": cfg.color
@@ -34,6 +36,14 @@ module.exports = function(cfg) {
     "pref": {
       "highlight": true,
       "destination": true
+    },
+    "clock": {
+      "running": false,
+      "initial": 300,
+      "increment": 8,
+      "black": 300,
+      "white": 300,
+      "emerg": 30
     }
   };
 };

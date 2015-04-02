@@ -11,6 +11,7 @@ var renderMaterial = require('../round/view/roundView').renderMaterial;
 var replayView = require('./replay/replayView');
 var actions = require('./actions');
 var settings = require('../../settings');
+var clock = require('./clock');
 
 function renderAntagonist(ctrl, player, material) {
   return m('section.antagonist', [
@@ -19,7 +20,8 @@ function renderAntagonist(ctrl, player, material) {
         m('h2', i18n(player.color)),
         m('div'),
         renderMaterial(material)
-      ])
+      ]),
+      clock.view(ctrl.clock, player.color, ctrl.isClockRunning())
     ])
   ]);
 }

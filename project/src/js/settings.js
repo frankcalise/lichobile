@@ -46,7 +46,8 @@ module.exports = {
     analytics: localstorageprop('settings.analytics', true)
   },
   otb: {
-    flipPieces: localstorageprop('settings.otb.flipPieces', false)
+    flipPieces: localstorageprop('settings.otb.flipPieces', false),
+    enableClock: localstorageprop('settings.otb.enableClock', false)
   },
   ai: {
     availableOpponents: [

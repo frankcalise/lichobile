@@ -14,6 +14,12 @@ function renderEnded(ctrl) {
     status = i18n('checkmate') + '. ' + i18n(sit.color === 'white' ? 'blackIsVictorious' : 'whiteIsVictorious') + '.';
     return m('div.result', [result, m('br'), m('br'), status]);
   }
+  
+  if (ctrl.root.data.clock) {
+    result = ctrl.root.data.clock.white === 0 ? '0-1' : '1-0';
+    status = i18n('timeout') + '. ' + i18n(ctrl.root.data.clock.white === 'white' ? 'blackIsVictorious' : 'whiteIsVictorious') + '.';
+    return m('div.result', [result, m('br'), m('br'), status]);
+  }
 }
 
 function renderAlways(ctrl) {
@@ -31,6 +37,10 @@ function renderAlways(ctrl) {
         i18n('Flip pieces after move'), 'flipPieces',
         settings.onChange(settings.otb.flipPieces)
       )),
+      m('div.action', formWidgets.renderCheckbox(
+        i18n('otbEnableClock'), 'enableClock',
+        settings.onChange(settings.otb.enableClock)
+      ))
     ])
   ];
 }
